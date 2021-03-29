@@ -1,22 +1,36 @@
 import Head from 'next/head'
-import * as React from 'react'
-// import Footer from './footer'
-import Header from './header'
+import React, { useEffect, useState } from 'react'
+import Dropdown from './Dropdown'
+import Footer from './Footer'
+import Header from './Header'
 
 const Layout = (props: any) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const toggle = () => {
+    setIsOpen(!isOpen)
+  }
+  useEffect(() => {
+    const hideMenu = () => {
+      if (window.innerWidth > 768 && isOpen) {
+        setIsOpen(false)
+      }
+    }
+    window.addEventListener('resize', hideMenu)
+    return () => {
+      window.removeEventListener('resize', hideMenu)
+    }
+  })
   return (
     <React.Fragment>
       <Head>
         <title>Spotify</title>
-        <script src="https://kit.fontawesome.com/8805737f27.js" crossOrigin="anonymous"></script>
       </Head>
 
-      <div>
-        <Header />
-        {props.children}
+      <Header toggle={toggle} />
+      <Dropdown isOpen={isOpen} toggle={toggle} />
+      {props.children}
 
-        {/* <Footer /> */}
-      </div>
+      <Footer />
     </React.Fragment>
   )
 }
