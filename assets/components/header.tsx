@@ -32,7 +32,7 @@ function Header({ toggle }: toggleInterface) {
             <img
               src="https://cdn2.iconfinder.com/data/icons/social-icons-33/128/Spotify-256.png"
               width="50"
-              alt="logo"
+              alt="spotify-logo"
               className="mr-2 cursor-pointer"
             ></img>
           </Link>

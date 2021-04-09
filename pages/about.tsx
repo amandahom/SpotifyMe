@@ -1,17 +1,40 @@
 import Layout from 'assets/components/Layout'
 import { useSession } from 'next-auth/client'
 import fetch from 'node-fetch'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import Loading from '../assets/components/Loading'
+
+interface DataInterface {
+  country: string
+  display_name: string
+  email: string
+  external_urls: ProfileInterface
+  followers: FollowersInterface
+}
+
+interface ProfileInterface {
+  spotify: string
+}
+
+interface FollowersInterface {
+  total: number
+}
+
+interface SessionInterface {
+  country: string
+  displayName: string
+  email: string
+  externalURL: string
+  followers: number
+}
 
 function About() {
+  const [error, setError] = useState(null)
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [user, setUser] = useState<SessionInterface>()
   const [session, loading] = useSession()
-  // const [user, setUser] = useState([]);
-  const [user, setUser] = useState()
-  if (loading) return null
-  // getUser()
-  console.log(user)
 
-  async function getUser() {
+  const requestUser = async (): Promise<any> => {
     try {
       let accessToken =
         session && session.user && session.user.accessToken && session.user.accessToken ? session.user.accessToken : ''
@@ -25,81 +48,86 @@ function About() {
         },
       })
       const data = await response.json()
-      //   if (userDataRes) {
-      //     return res.status(200).json(userDataRes)
-      //   } else {
-      //     return new Error('No user found')
-      //   }
-      getDetails(data)
+      return getUser(data)
     } catch (err) {
       console.log(err)
     }
-    return
-  }
+    function getUser(data: DataInterface) {
+      const country: string = `${data['country']}`
+      const displayName: string = `${data['display_name']}`.split(' ')[0]
+      const email: string = `${data['email']}`
+      const externalURL: string = `${data['external_urls']['spotify']}`
+      const followers: number = parseInt(`${data['followers']['total']}`)
 
-  function getDetails(data: SessionInterface) {
-    const country: string = `${data['country']}`
-    const name: string = `${data['display_name']}`
-    let firstName = name.replace(/ .*/, '')
-    if (firstName === '') {
-      firstName = 'there'
+      return {
+        country,
+        displayName,
+        email,
+        externalURL,
+        followers,
+      }
     }
-    const email: string = `${data['email']}`
-    const profileLink: string = `${data['external_urls']['spotify']}`
-    const followers: number = parseInt(`${data['followers']['total']}`)
-    const userData: Array<string | number> = []
-    userData.push(country, firstName, email, profileLink, followers)
-    // setUser(country, firstName, email, profileLink, followers)
-    // console.log(userData)
-    // return userData
-    setUser(userData)
-    console.log(userData)
-    // return {
-    //   country,
-    //   firstName,
-    //   email,
-    //   profileLink,
-    //   followers,
-    // }
   }
 
-  // interface UserInterface {
-  //   country: string
-  //   firstName: string
-  //   email: string
-  //   profileLink: string
-  //   followers: number
-  // }
+  useEffect(() => {
+    async function getUserData() {
+      if (session) {
+        let userData = await requestUser()
+        setUser(userData)
+        setIsLoaded(true)
+        console.log('Session exists.')
+      } else {
+        console.log('Session does not exist.')
+      }
+    }
+    getUserData()
+  }, [])
 
-  interface SessionInterface {
-    country: string
-    display_name: string
-    email: string
-    external_urls: ProfileInterface
-    followers: FollowersInterface
-  }
-
-  interface FollowersInterface {
-    href: null
-    total: number
-  }
-
-  interface ProfileInterface {
-    spotify: string
-  }
-
-  return (
-    <Layout>
-      <div>
-        <h1 className="sm:text-5xl text-3xl p-6">Hey {user}!</h1>
-
-        <div>
-          <h2>Want to listen to Spotify right now?</h2>
-          {/* <a href={data.listenNow}>Click here.</a> */}
+  if (error) {
+    return <div>Error: {error.message}</div>
+  } else if (!isLoaded) {
+    return (
+      <Layout>
+        <div className="flex justify-center items-center h-96">
+          <Loading />
         </div>
-      </div>
-    </Layout>
-  )
+      </Layout>
+    )
+  } else {
+    return (
+      <Layout>
+        <div>
+          <h1 className="sm:text-5xl text-3xl p-6 text-center">Hey {user && user.displayName}!</h1>
+          <div className="block md:grid grid-rows-2 grid-flow-col gap-4">
+            <div className="row-span-2">
+              <iframe
+                src="https://open.spotify.com/embed/playlist/1ubXflHVEom74iaI4Gi8cz"
+                width="300"
+                height="380"
+                frameBorder="0"
+                allowTransparency={true}
+                allow="encrypted-media"
+              ></iframe>
+            </div>
+            <div className="text-center col-span-3">
+              <h1 className="text-3xl col-start-2 col-end-2"># of followers:</h1>{' '}
+              {user && <p className="text-9xl">{user.followers}</p>}
+            </div>
+
+            <div className="text-center  col-span-3">
+              {user && (
+                <div className="">
+                  <a href={user.externalURL}>
+                    <h1 className="text-3xl col-start-2 col-end-2">Listen now</h1>
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </Layout>
+    )
+  }
 }
 
 export default About
