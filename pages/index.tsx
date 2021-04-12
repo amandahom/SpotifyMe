@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/client'
 
 export default function Home() {
   const [session, loading] = useSession()
+
   if (!session) {
     return (
       <Layout>
