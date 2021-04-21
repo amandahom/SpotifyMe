@@ -36,7 +36,7 @@ function Header({ toggle }: toggleInterface) {
               className="mr-2 cursor-pointer"
             ></img>
           </Link>
-          <h1 className="inline-block p-2 text-indigo-200 mr-2 text-xl">Spotify</h1>
+          <h1 className="inline-block p-2 text-indigo-200 mr-2 text-xl">SpotifyMe</h1>
         </div>
         <div>
           {!session && (
@@ -44,7 +44,7 @@ function Header({ toggle }: toggleInterface) {
               <div className="hidden md:inline-block py-2 px-4 text-indigo-200 mr-2">Not signed in</div>
               <button
                 onClick={() => signIn()}
-                className="inline-block py-2 px-4 text-yellow-700 hover:text-yellow-800 bg-yellow-400 hover:bg-yellow-300 rounded transition ease-in duration-150"
+                className="inline-block py-2 px-4 text-yellow-700 hover:text-yellow-800 bg-yellow-400 hover:bg-yellow-300 rounded transition ease-in duration-150 focus:outline-none"
               >
                 Sign in
               </button>
@@ -62,18 +62,12 @@ function Header({ toggle }: toggleInterface) {
                     />
                   </svg>
                 </div>
-                <Link href="/about">
-                  <img
-                    className="hidden md:inline-block py-1 px-4 w-24 cursor-pointer"
-                    src={session.user.picture}
-                  ></img>
-                </Link>
                 <div className="hidden sm:inline-block py-2 px-4 text-indigo-200 mr-2">
                   Signed in as {session.user.name}
                 </div>
                 <button
                   onClick={() => signOut()}
-                  className="hidden sm:inline-block py-2 px-4 text-yellow-700 hover:text-yellow-800 bg-yellow-400 hover:bg-yellow-300 rounded transition ease-in duration-150"
+                  className="hidden sm:inline-block py-2 px-4 text-yellow-700 hover:text-yellow-800 bg-yellow-400 hover:bg-yellow-300 rounded transition ease-in duration-150 focus:outline-none"
                 >
                   Sign out
                 </button>

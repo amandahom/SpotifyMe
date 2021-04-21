@@ -1,28 +1,19 @@
+import About from 'assets/components/About'
 import FollowedArtists from 'assets/components/FollowedArtists'
+import Loading from 'assets/components/Loading'
 import TopArtists from 'assets/components/TopArtists'
 import TopTracks from 'assets/components/TopTracks'
-import { useRef, useState } from 'react'
+import { useSession } from 'next-auth/client'
+import { useEffect, useRef, useState } from 'react'
 
 function Main(this: any) {
   const [showFollowedArtists, setShowFollowedArtists] = useState(false)
   const [showTopArtists, setShowTopArtists] = useState(false)
   const [showTopTracks, setShowTopTracks] = useState(false)
+  const [showAbout, setShowAbout] = useState(false)
   const dropdownRef = useRef(null)
-  // const userArtistsOnClick = () => {
-  //   setShowFollowedArtists(true)
-  //   setShowTopArtists(false)
-  //   setShowTopTracks(false)
-  // }
-  // const userTopArtistsOnClick = () => {
-  //   setShowTopArtists(true)
-  //   setShowFollowedArtists(false)
-  //   setShowTopTracks(false)
-  // }
-  // const userTopTracksOnClick = () => {
-  //   setShowTopTracks(true)
-  //   setShowTopArtists(false)
-  //   setShowFollowedArtists(false)
-  // }
+  const [session, loading] = useSession()
+  const [isLoaded, setIsLoaded] = useState(false)
   function handleChange(e: any) {
     let value = e && e.target && e.target.value
     console.log(value)
@@ -31,67 +22,75 @@ function Main(this: any) {
       console.log('selected')
       setShowTopArtists(false)
       setShowTopTracks(false)
+      setShowAbout(false)
     } else if (value === 'Your Top Artists') {
       setShowTopArtists(true)
       setShowFollowedArtists(false)
       setShowTopTracks(false)
+      setShowAbout(false)
     } else if (value === 'Your Top Tracks') {
       setShowTopTracks(true)
       setShowTopArtists(false)
       setShowFollowedArtists(false)
+      setShowAbout(false)
     } else {
       console.log('Nothing Selected')
     }
   }
 
-  return (
-    <div>
-      <div>
-        <div className="col-span-6 sm:col-span-3">
-          <select
-            ref={dropdownRef}
-            onChange={e => handleChange(e)}
-            className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          >
-            <option value="">Select</option>
-            <option value="Your Followed Artists" className="hover:bg-purple-200 cursor-pointer">
-              Your Followed Artists
-            </option>
-            <option value="Your Top Artists" className="hover:bg-purple-200 cursor-pointer">
-              Your Top Artists
-            </option>
-            <option value="Your Top Tracks" className="hover:bg-purple-200 cursor-pointer">
-              Your Top Tracks
-            </option>
-          </select>
-        </div>
-        {/* <input
-          type="submit"
-          value="Your Followed Artists"
-          onClick={userArtistsOnClick}
-          className="hover:bg-purple-200 cursor-pointer"
-        /> */}
+  useEffect(() => {
+    async function getUserData() {
+      if (session) {
+        setShowAbout(true)
+        setIsLoaded(true)
+        console.log('Session exists.')
+      } else {
+        console.log('Session does not exist.')
+      }
+    }
+    getUserData()
+  }, [])
 
-        {/* <input
-          type="submit"
-          value="Your Top Artists"
-          onClick={userTopArtistsOnClick}
-          className="hover:bg-purple-200 cursor-pointer"
-        /> */}
-        {/* <input
-          type="submit"
-          value="Your Top Tracks"
-          onClick={userTopTracksOnClick}
-          className="hover:bg-purple-200 cursor-pointer"
-        /> */}
+  if (!isLoaded) {
+    return (
+      <div className="flex justify-center items-center h-96">
+        <Loading />
       </div>
+    )
+  } else {
+    return (
       <div>
-        {showFollowedArtists ? <FollowedArtists /> : null}
-        {showTopArtists ? <TopArtists /> : null}
-        {showTopTracks ? <TopTracks /> : null}
+        <div>
+          <div className="shadow overflow-hidden sm:rounded-md">
+            <div className="px-4 py-5 bg-white sm:p-6">
+              <select
+                ref={dropdownRef}
+                onChange={e => handleChange(e)}
+                className="mx-4 inline-block w-11/12 py-2 px-4 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              >
+                <option value="">Select</option>
+                <option value="Your Followed Artists" className="hover:bg-purple-200 cursor-pointer">
+                  Your Followed Artists
+                </option>
+                <option value="Your Top Artists" className="hover:bg-purple-200 cursor-pointer">
+                  Your Top Artists
+                </option>
+                <option value="Your Top Tracks" className="hover:bg-purple-200 cursor-pointer">
+                  Your Top Tracks
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div>
+          {showAbout ? <About /> : null}
+          {showFollowedArtists ? <FollowedArtists /> : null}
+          {showTopArtists ? <TopArtists /> : null}
+          {showTopTracks ? <TopTracks /> : null}
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
 export default Main

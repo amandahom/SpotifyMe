@@ -25,7 +25,6 @@ function Dropdown({ isOpen, toggle }: toggleInterface) {
           )}
           {session && (
             <>
-              <img className="hidden md:inline-block py-2 px-4 w-24" src={session.user.picture}></img>
               <div className="block py-2 px-4 text-indigo-200 mr-2">Signed in as {session.user.name}</div>
               <button
                 onClick={() => signOut()}

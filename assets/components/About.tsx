@@ -1,8 +1,7 @@
-import Layout from 'assets/components/Layout'
+import Loading from 'assets/components/Loading'
 import { useSession } from 'next-auth/client'
 import fetch from 'node-fetch'
 import React, { useEffect, useState } from 'react'
-import Loading from '../assets/components/Loading'
 
 interface DataInterface {
   country: string
@@ -29,10 +28,11 @@ interface SessionInterface {
 }
 
 function About() {
-  const [error, setError] = useState(null)
+  const [error, setError] = useState('')
   const [isLoaded, setIsLoaded] = useState(false)
   const [user, setUser] = useState<SessionInterface>()
   const [session, loading] = useSession()
+  // const [embedIsLoaded, setembedIsLoaded] = useSession(false)
 
   const requestUser = async (): Promise<any> => {
     try {
@@ -77,6 +77,7 @@ function About() {
         setIsLoaded(true)
         console.log('Session exists.')
       } else {
+        setError('Please log in.')
         console.log('Session does not exist.')
       }
     }
@@ -84,48 +85,44 @@ function About() {
   }, [])
 
   if (error) {
-    return <div>Error: {error.message}</div>
+    return <div>Could not get results.</div>
   } else if (!isLoaded) {
     return (
-      <Layout>
-        <div className="flex justify-center items-center h-96">
-          <Loading />
-        </div>
-      </Layout>
+      <div className="flex justify-center items-center h-96">
+        <Loading />
+      </div>
     )
   } else {
     return (
-      <Layout>
-        <div>
-          <h1 className="sm:text-5xl text-3xl p-6 text-center">Hey {user && user.displayName}!</h1>
-          <div className="block md:grid grid-rows-2 grid-flow-col gap-4">
-            <div className="row-span-2">
-              <iframe
-                src="https://open.spotify.com/embed/playlist/1ubXflHVEom74iaI4Gi8cz"
-                width="300"
-                height="380"
-                frameBorder="0"
-                allowTransparency={true}
-                allow="encrypted-media"
-              ></iframe>
-            </div>
-            <div className="text-center col-span-3">
-              <h1 className="text-3xl col-start-2 col-end-2"># of followers:</h1>{' '}
-              {user && <p className="text-9xl">{user.followers}</p>}
-            </div>
+      <div>
+        <h1 className="sm:text-5xl text-3xl p-6 text-center">Hey {user && user.displayName}!</h1>
+        <div className="block md:grid grid-rows-2 grid-flow-col gap-4 mt-6">
+          <div className="row-span-2">
+            <iframe
+              src="https://open.spotify.com/embed/playlist/1ubXflHVEom74iaI4Gi8cz"
+              width="350"
+              className="px-4"
+              height="380"
+              frameBorder="0"
+              allow="encrypted-media"
+            ></iframe>
+          </div>
+          <div className="text-center col-span-3">
+            <h1 className="text-3xl col-start-2 col-end-2"># of followers:</h1>{' '}
+            {user && <p className="text-9xl">{user.followers}</p>}
+          </div>
 
-            <div className="text-center  col-span-3">
-              {user && (
-                <div className="">
-                  <a href={user.externalURL}>
-                    <h1 className="text-3xl col-start-2 col-end-2">Listen now</h1>
-                  </a>
-                </div>
-              )}
-            </div>
+          <div className="text-center  col-span-3">
+            {user && (
+              <div className="">
+                <a href={user.externalURL} target="_blank">
+                  <h1 className="text-3xl col-start-2 col-end-2">Listen now</h1>
+                </a>
+              </div>
+            )}
           </div>
         </div>
-      </Layout>
+      </div>
     )
   }
 }
