@@ -33,7 +33,7 @@ function Header({ toggle }: toggleInterface) {
               src="https://cdn2.iconfinder.com/data/icons/social-icons-33/128/Spotify-256.png"
               width="50"
               alt="spotify-logo"
-              className="mr-2 cursor-pointer"
+              className="mr-2"
             ></img>
           </Link>
           <h1 className="inline-block p-2 text-indigo-200 mr-2 text-xl">SpotifyMe</h1>
@@ -44,7 +44,7 @@ function Header({ toggle }: toggleInterface) {
               <div className="hidden md:inline-block py-2 px-4 text-indigo-200 mr-2">Not signed in</div>
               <button
                 onClick={() => signIn()}
-                className="inline-block py-2 px-4 text-yellow-700 hover:text-yellow-800 bg-yellow-400 hover:bg-yellow-300 rounded transition ease-in duration-150 focus:outline-none"
+                className="inline-block py-2 px-4 text-indigo-700 hover:text-indigo-100 bg-indigo-200 hover:bg-indigo-500 border-indigo-200 border-2 rounded transition ease-in duration-150 focus:outline-none"
               >
                 Sign in
               </button>
@@ -67,7 +67,7 @@ function Header({ toggle }: toggleInterface) {
                 </div>
                 <button
                   onClick={() => signOut()}
-                  className="hidden sm:inline-block py-2 px-4 text-yellow-700 hover:text-yellow-800 bg-yellow-400 hover:bg-yellow-300 rounded transition ease-in duration-150 focus:outline-none"
+                  className="hidden sm:inline-block py-2 px-4 text-indigo-700 hover:text-indigo-100 bg-indigo-200 hover:bg-indigo-500 border-indigo-200 border-2 rounded transition ease-in duration-150 focus:outline-none"
                 >
                   Sign out
                 </button>

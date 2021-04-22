@@ -1,7 +1,6 @@
 import Layout from 'assets/components/Layout'
 import Main from 'assets/components/Main'
 import { useSession } from 'next-auth/client'
-
 export default function Home() {
   const [session, loading] = useSession()
 
@@ -10,7 +9,7 @@ export default function Home() {
       <Layout>
         <main>
           <img
-            src="https://res.cloudinary.com/cub95/image/upload/v1617593447/vishnu-r-nair-m1WZS5ye404-unsplash_1_csz562.jpg"
+            src="https://res.cloudinary.com/cub95/image/upload/v1618796401/solen-feyissa-6MaaSBw0saw-unsplash_1_or8tmk.jpg"
             className="bg-center bg-no-repeat bg-cover h-screen w-screen"
           ></img>
         </main>

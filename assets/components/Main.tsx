@@ -16,10 +16,8 @@ function Main(this: any) {
   const [isLoaded, setIsLoaded] = useState(false)
   function handleChange(e: any) {
     let value = e && e.target && e.target.value
-    console.log(value)
     if (value === 'Your Followed Artists') {
       setShowFollowedArtists(true)
-      console.log('selected')
       setShowTopArtists(false)
       setShowTopTracks(false)
       setShowAbout(false)
@@ -59,24 +57,36 @@ function Main(this: any) {
     )
   } else {
     return (
-      <div>
-        <div>
-          <div className="shadow overflow-hidden sm:rounded-md">
-            <div className="px-4 py-5 bg-white sm:p-6">
+      <div className="bg-indigo-50">
+        <div className="shadow-md">
+          <h1 className="md:text-2xl pt-4 pb-2 px-4 sm:px-10">Learn more about your music habits...</h1>
+          <div className="overflow-hidden">
+            <div className="px-4 pb-2 sm:px-10 sm:pb-6 mb-2 relative inline-flex bg-indigo-50">
+              <svg
+                className="w-3 h-2 absolute right-0 mr-8 sm:mr-14 mt-5 pointer-events-none"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 412 232"
+              >
+                <path
+                  d="M206 171.144L42.678 7.822c-9.763-9.763-25.592-9.763-35.355 0-9.763 9.764-9.763 25.592 0 35.355l181 181c4.88 4.882 11.279 7.323 17.677 7.323s12.796-2.441 17.678-7.322l181-181c9.763-9.764 9.763-25.592 0-35.355-9.763-9.763-25.592-9.763-35.355 0L206 171.144z"
+                  fill="#648299"
+                  fillRule="nonzero"
+                />
+              </svg>
               <select
                 ref={dropdownRef}
                 onChange={e => handleChange(e)}
-                className="mx-4 inline-block w-11/12 py-2 px-4 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                className="border border-gray-300 rounded text-gray-600 h-12 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none"
               >
                 <option value="">Select</option>
                 <option value="Your Followed Artists" className="hover:bg-purple-200 cursor-pointer">
-                  Your Followed Artists
+                  Your Followed Artists 👩🏻‍🎨
                 </option>
                 <option value="Your Top Artists" className="hover:bg-purple-200 cursor-pointer">
-                  Your Top Artists
+                  Your Top Artists 📈
                 </option>
                 <option value="Your Top Tracks" className="hover:bg-purple-200 cursor-pointer">
-                  Your Top Tracks
+                  Your Top Tracks 📈
                 </option>
               </select>
             </div>

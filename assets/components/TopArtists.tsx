@@ -5,7 +5,6 @@ import Loading from './Loading'
 
 function TopArtists() {
   const [session, loading] = useSession()
-  const [error, setError] = useState(null)
   const [topArtists, setTopArtists] = useState()
   const [isLoaded, setIsLoaded] = useState(false)
   const [nextSearch, setNextSearch] = useState()
@@ -58,7 +57,7 @@ function TopArtists() {
           },
         })
         let items = await topArtistInfo.json()
-        let topArtists = items.items.map((topArtists: topArtistsDataInterface) => ({
+        let topArtists: topArtistsDataInterface = items.items.map((topArtists: topArtistsDataInterface) => ({
           url: topArtists.external_urls.spotify,
           fans: topArtists.followers.total,
           genres: topArtists.genres,
@@ -78,7 +77,7 @@ function TopArtists() {
           },
         })
         let items = await topArtistInfo.json()
-        let topArtists = items.items.map((topArtists: topArtistsDataInterface) => ({
+        let topArtists: topArtistsDataInterface = items.items.map((topArtists: topArtistsDataInterface) => ({
           url: topArtists.external_urls.spotify,
           fans: topArtists.followers.total,
           genres: topArtists.genres,
@@ -87,27 +86,6 @@ function TopArtists() {
           name: topArtists.name,
           popularity: topArtists.popularity,
         }))
-
-        // let topArtistsFansAscending = topArtists.sort(function(a: any, b: any) {
-        //   return a.fans - b.fans
-        // })
-
-        // let topArtistsFansDescending = topArtists.sort(function(a: any, b: any) {
-        //   return b.fans - a.fans
-        // })
-
-        // let topArtistsPopularityAscending = topArtists.sort(function(a: any, b: any) {
-        //   return a.popularity - b.popularity
-        // })
-
-        // let topArtistsPopularityDescending = topArtists.sort(function(a: any, b: any) {
-        //   return b.popularity - a.popularity
-        // })
-
-        // console.log(topArtistsFansAscending)
-        // console.log(topArtistsFansDescending)
-        // console.log(topArtistsPopularityAscending)
-        // console.log(topArtistsPopularityDescending)
 
         let topArtistsNextSearch: string = items.next
         return { topArtists: topArtists, topArtistsNextSearch: topArtistsNextSearch }
@@ -120,19 +98,9 @@ function TopArtists() {
     async function getTopArtists() {
       if (session) {
         const res = await requestTopArtists()
-        console.log(res)
         setTopArtists(res.topArtists)
         setShowNextButton(true)
         setIsLoaded(true)
-        setTimeout(() => {
-          window.scrollTo({
-            top: 0,
-            left: 0,
-            behavior: 'smooth',
-          })
-        }, 500)
-
-        console.log('Session exists.')
       } else {
         console.log('Session does not exist.')
       }
@@ -140,46 +108,43 @@ function TopArtists() {
     getTopArtists()
   }, [])
 
+  const scrollToTop = async () => {
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      })
+    }, 500)
+  }
+
   const onSubmit = async (nextSearch: string) => {
     if (nextSearch) {
       let nextRes = await requestTopArtists(nextSearch)
       setTopArtists(nextRes.topArtists)
       setNextSearch(nextRes.topArtistsNextSearch)
       setShowNextButton(true)
-      console.log(nextRes)
       if (nextRes.topArtistsNextSearch === null) {
         setShowNextButton(false)
       }
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth',
-      })
       setIsLoaded(true)
     } else {
       const res = await requestTopArtists()
-      let nextSearch = res && res.topArtistsNextSearch
+      let nextSearch: string = res && res.topArtistsNextSearch
       let nextRes = await requestTopArtists(nextSearch)
       setTopArtists(nextRes.topArtists)
       setShowNextButton(true)
-      console.log(nextRes)
       setNextSearch(nextRes.topArtistsNextSearch)
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth',
-      })
       setIsLoaded(true)
     }
   }
 
-  // function search(followers) {
-  //   return followers.filter(followers => followers.name.toLowerCase().indexOf(q) > -1)
-  // }
-
   function TopArtistsCards(topArtists: topArtistsInterface, index: number) {
     return (
-      <div className="rounded overflow-hidden shadow-lg max-w-sm mb-8 md:mb-0 md:px-0" key={index}>
+      <div
+        className="rounded overflow-hidden shadow-lg max-w-sm mb-8 md:mb-0 md:px-0 transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-105 transform hover:shadow-2xl bg-white"
+        key={index}
+      >
         <img className="w-full h-80" src={topArtists.images[0].url} alt="Artist Image"></img>
         <div className="px-6 pt-4 pb-2 grid gap-2 grid-cols-3 grid-rows-2">
           <div className="font-bold text-xl mb-1 col-span-2">{topArtists.name}</div>
@@ -194,7 +159,7 @@ function TopArtists() {
           </a>
           <div className="col-span-3">
             <p className="text-black-700 text-base">
-              <b>Followers:</b> {topArtists.fans}{' '}
+              <b>Followers:</b> {topArtists.fans}
             </p>
             <p className="text-black-700 text-base">
               <b>Popularity:</b> {topArtists.popularity}
@@ -206,7 +171,7 @@ function TopArtists() {
             return (
               <span
                 key={index}
-                className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+                className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-indigo-200"
               >
                 <p>{genres}</p>
               </span>
@@ -217,9 +182,7 @@ function TopArtists() {
     )
   }
 
-  if (error) {
-    return <div>Error</div>
-  } else if (!isLoaded) {
+  if (!isLoaded) {
     return (
       <div className="flex justify-center items-center h-96">
         <Loading />
@@ -231,19 +194,18 @@ function TopArtists() {
         <div className="p-5 sm:p-10 2xl:p-10 mx-2 md:mx-4 pb-10 grid col-start-auto sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 md:gap-10">
           {topArtists.map((topArtists: topArtistsInterface, index: number) => {
             return <TopArtistsCards {...topArtists} key={index} />
-            // data={search(followers)}
           })}
         </div>
         {showNextButton ? (
           <div>
             <div className="flex justify-center mx-10">
               <button
-                className="flex border bg-yellow-400 hover:bg-yellow-300 rounded transition ease-in duration-150 py-4 px-6 justify-center items-center w-7/12 md:w-60 lg:w-40 focus:outline-none"
+                className="flex border bg-blue-300 hover:bg-blue-200 hover:border-blue-700 rounded transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-y-100 transform hover:shadow-2xl py-4 px-6 justify-center items-center w-7/12 md:w-60 lg:w-40 focus:outline-none"
                 onClick={() => {
                   onSubmit(nextSearch)
                 }}
               >
-                <p className="text-yellow-700 hover:text-yellow-800 pr-2">Next Page</p>
+                <p className="text-black-700 hover:text-blue-700 pr-2">Next Page</p>
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path
                     fillRule="evenodd"
@@ -255,7 +217,23 @@ function TopArtists() {
             </div>
           </div>
         ) : null}
-        <div className="pb-40"></div>
+        <div className="pb-40">
+          <svg
+            className="w-14 h-14 animate-bounce absolute sm:ml-10 ml-4 cursor-pointer"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            onClick={scrollToTop}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110 18 9 9 0 010-18z"
+            ></path>
+          </svg>
+        </div>
       </div>
     )
   }

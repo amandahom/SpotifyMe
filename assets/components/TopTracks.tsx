@@ -5,9 +5,10 @@ import Loading from './Loading'
 
 function TopTracks() {
   const [session, loading] = useSession()
-  const [error, setError] = useState(null)
   const [topTracks, setTopTracks] = useState()
   const [isLoaded, setIsLoaded] = useState(false)
+  const [nextSearch, setNextSearch] = useState()
+  const [showNextButton, setShowNextButton] = useState(false)
 
   interface topTracksDataInterface {
     external_urls: urlInterface
@@ -46,34 +47,51 @@ function TopTracks() {
     url: string
   }
 
-  const requestTopTracks = async (): Promise<any> => {
+  const requestTopTracks = async (nextSearch = ''): Promise<any> => {
     try {
       let accessToken =
         session && session.user && session.user.accessToken && session.user.accessToken ? session.user.accessToken : ''
 
       const ENDPOINT: string = `https://api.spotify.com/v1/me/top/tracks`
-
-      const topTracksInfo = await fetch(ENDPOINT, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      const items = await topTracksInfo.json()
-      console.log(items)
-      const topTracks = items.items.map((topTracks: topTracksDataInterface) => ({
-        url: topTracks.external_urls.spotify,
-        releasedDate: topTracks.album.release_date,
-        album: topTracks.album.name,
-        images: topTracks.album.images,
-        artist: topTracks.artists[0].name,
-        trackName: topTracks.name,
-        popularity: topTracks.popularity,
-      }))
-
-      console.log(topTracks)
-
-      return topTracks
+      if (nextSearch) {
+        let topTracksInfo = await fetch(nextSearch, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        let items = await topTracksInfo.json()
+        let topTracks: topTracksDataInterface = items.items.map((topTracks: topTracksDataInterface) => ({
+          url: topTracks.external_urls.spotify,
+          releasedDate: topTracks.album.release_date,
+          album: topTracks.album.name,
+          images: topTracks.album.images,
+          artist: topTracks.artists[0].name,
+          trackName: topTracks.name,
+          popularity: topTracks.popularity,
+        }))
+        let topTracksNextSearch: string = items.next
+        return { topTracks: topTracks, topTracksNextSearch: topTracksNextSearch }
+      } else {
+        let topTracksInfo = await fetch(ENDPOINT, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        let items = await topTracksInfo.json()
+        let topTracks: topTracksDataInterface = items.items.map((topTracks: topTracksDataInterface) => ({
+          url: topTracks.external_urls.spotify,
+          releasedDate: topTracks.album.release_date,
+          album: topTracks.album.name,
+          images: topTracks.album.images,
+          artist: topTracks.artists[0].name,
+          trackName: topTracks.name,
+          popularity: topTracks.popularity,
+        }))
+        let topTracksNextSearch: string = items.next
+        return { topTracks: topTracks, topTracksNextSearch: topTracksNextSearch }
+      }
     } catch (err) {
       console.log(err)
     }
@@ -82,10 +100,9 @@ function TopTracks() {
     async function getTopTracks() {
       if (session) {
         const res = await requestTopTracks()
-        console.log(res)
-        setTopTracks(res)
+        setTopTracks(res.topTracks)
+        setShowNextButton(true)
         setIsLoaded(true)
-        console.log('Session exists.')
       } else {
         console.log('Session does not exist.')
       }
@@ -93,28 +110,48 @@ function TopTracks() {
     getTopTracks()
   }, [])
 
-  const onSubmit = async (event: any) => {
-    event.preventDefault()
+  const scrollToTop = async () => {
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      })
+    }, 500)
   }
 
-  // function search(followers) {
-  //   return followers.filter(followers => followers.name.toLowerCase().indexOf(q) > -1)
-  // }
+  const onSubmit = async (nextSearch: string) => {
+    if (nextSearch) {
+      let nextRes = await requestTopTracks(nextSearch)
+      setTopTracks(nextRes.topTracks)
+      setNextSearch(nextRes.topTracksNextSearch)
+      setShowNextButton(true)
+      if (nextRes.topTracksNextSearch === null) {
+        setShowNextButton(false)
+      }
+      setIsLoaded(true)
+    } else {
+      const res = await requestTopTracks()
+      let nextSearch: string = res && res.topTracksNextSearch
+      let nextRes = await requestTopTracks(nextSearch)
+      setTopTracks(nextRes.topTracks)
+      setShowNextButton(true)
+      setNextSearch(nextRes.topTracksNextSearch)
+      setIsLoaded(true)
+    }
+  }
 
   function TopTracksCards(topTracks: topTracksInterface, index: number) {
     return (
-      <div className="rounded overflow-hidden shadow-lg max-w-sm mb-8 md:mb-0 md:px-0" key={index}>
+      <div
+        className="rounded overflow-hidden shadow-lg max-w-sm mb-8 md:mb-0 md:px-0 transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-105 transform hover:shadow-2xl bg-white"
+        key={index}
+      >
         <img className="w-full h-80" src={topTracks.images[0].url} alt="Artist Image"></img>
-
-        <div className="px-6 pt-4 pb-2">
-          <div className="font-bold text-xl mb-2">{topTracks.trackName}</div>
-          <p className="text-gray-700 text-base">{topTracks.artist}</p>
-          <p className="text-gray-700 text-base">{topTracks.album}</p>
-          <p className="text-gray-700 text-base">Followers</p>
-          <p className="text-gray-700 text-base">Released Date: {topTracks.releasedDate}</p>
-          <p className="text-gray-700 text-base">Popularity: {topTracks.popularity}</p>
-          <a href={topTracks.url} target="_blank">
-            <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <div className="px-6 pt-4 pb-10 grid gap-2 grid-cols-3 grid-rows-2">
+          <div className="font-bold text-xl col-span-2">{topTracks.trackName}</div>
+          <a href={topTracks.url} target="_blank" className="col-span-1 justify-self-end">
+            <svg className="w-10 h-10" fill="black" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <path
                 fillRule="evenodd"
                 d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
@@ -122,26 +159,25 @@ function TopTracks() {
               ></path>
             </svg>
           </a>
-        </div>
-        <div className="px-6 pt-4 pb-2">
-          {/* {topTracks.genres.map((genres: String, index: number) => {
-            return (
-              <span
-                key={index}
-                className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-              >
-                <p>{genres}</p>
-              </span>
-            )
-          })} */}
+          <div className="text-lg mb-1 col-span-2">
+            <p>{topTracks.artist}</p>
+            <p className="text-sm">{topTracks.album}</p>
+          </div>
+
+          <div className="col-span-3">
+            <p className="text-black-700 text-base">
+              <b>Popularity:</b> {topTracks.popularity}
+            </p>
+            <p className="text-black-700 text-base">
+              <b>Released Date:</b> {topTracks.releasedDate}
+            </p>
+          </div>
         </div>
       </div>
     )
   }
 
-  if (error) {
-    return <div>Error</div>
-  } else if (!isLoaded) {
+  if (!isLoaded) {
     return (
       <div className="flex justify-center items-center h-96">
         <Loading />
@@ -150,33 +186,49 @@ function TopTracks() {
   } else {
     return (
       <div>
-        <div>
-          {/* <input
-            className="border-black border-solid border-opacity-100 bg-red outline-black"
-            type="text"
-            value={q}
-            onChange={e => setQ(e.target.value)}
-          /> */}
-        </div>
         <div className="p-5 sm:p-10 2xl:p-10 mx-2 md:mx-4 pb-10 grid col-start-auto sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 md:gap-10">
           {topTracks.map((topTracks: topTracksInterface, index: number) => {
             return <TopTracksCards {...topTracks} key={index} />
-            // data={search(followers)}
           })}
         </div>
-        <div className="flex justify-center">
-          <button className="flex border border-indigo-300 bg-indigo-300 hover:bg-indigo-100 block rounded-sm font-bold py-4 px-6 justify-center items-center w-6/12 md:w-60">
-            <p className="text-black pr-2">Next page</p>
-            <svg className="w-6 h-6" fill="black" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <path
-                fill-rule="evenodd"
-                d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-          </button>
+        {showNextButton ? (
+          <div>
+            <div className="flex justify-center mx-10">
+              <button
+                className="flex border bg-blue-300 hover:bg-blue-200 hover:border-blue-700 rounded transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-y-100 transform hover:shadow-2xl py-4 px-6 justify-center items-center w-7/12 md:w-60 lg:w-40 focus:outline-none"
+                onClick={() => {
+                  onSubmit(nextSearch)
+                }}
+              >
+                <p className="text-black-700 hover:text-blue-700 pr-2">Next Page</p>
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    fillRule="evenodd"
+                    d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        ) : null}
+        <div className="pb-40">
+          <svg
+            className="w-14 h-14 animate-bounce absolute sm:ml-10 ml-4 cursor-pointer"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            onClick={scrollToTop}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M9 11l3-3m0 0l3 3m-3-3v8m0-13a9 9 0 110 18 9 9 0 010-18z"
+            ></path>
+          </svg>
         </div>
-        <div className="pb-40"></div>
       </div>
     )
   }

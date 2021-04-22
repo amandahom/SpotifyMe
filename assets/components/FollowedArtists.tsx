@@ -176,3 +176,24 @@ function FollowedArtists() {
 }
 
 export default FollowedArtists
+
+// let topArtistsFansAscending = topArtists.sort(function(a: any, b: any) {
+//   return a.fans - b.fans
+// })
+
+// let topArtistsFansDescending = topArtists.sort(function(a: any, b: any) {
+//   return b.fans - a.fans
+// })
+
+// let topArtistsPopularityAscending = topArtists.sort(function(a: any, b: any) {
+//   return a.popularity - b.popularity
+// })
+
+// let topArtistsPopularityDescending = topArtists.sort(function(a: any, b: any) {
+//   return b.popularity - a.popularity
+// })
+
+// console.log(topArtistsFansAscending)
+// console.log(topArtistsFansDescending)
+// console.log(topArtistsPopularityAscending)
+// console.log(topArtistsPopularityDescending)
