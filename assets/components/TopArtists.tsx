@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import Loading from './Loading'
 
 function TopArtists() {
-  const [session, loading] = useSession()
+  const [session] = useSession()
   const [topArtists, setTopArtists] = useState()
   const [isLoaded, setIsLoaded] = useState(false)
   const [nextSearch, setNextSearch] = useState()
@@ -142,7 +142,7 @@ function TopArtists() {
   function TopArtistsCards(topArtists: topArtistsInterface, index: number) {
     return (
       <div
-        className="rounded overflow-hidden shadow-lg max-w-sm mb-8 md:mb-0 md:px-0 transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-105 transform hover:shadow-2xl bg-white"
+        className="rounded overflow-hidden shadow-lg max-w-sm 2xl:max-w-xs mb-8 md:mb-0 md:px-0 transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-105 transform hover:shadow-2xl bg-white"
         key={index}
       >
         <img className="w-full h-80" src={topArtists.images[0].url} alt="Artist Image"></img>
@@ -191,7 +191,7 @@ function TopArtists() {
   } else {
     return (
       <div>
-        <div className="p-5 sm:p-10 2xl:p-10 mx-2 md:mx-4 pb-10 grid col-start-auto sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 md:gap-10">
+        <div className="p-5 sm:p-10 2xl:p-10 mx-2 md:mx-4 lg:mx-10 pb-10 grid col-start-auto sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 md:gap-10 justify-items-center">
           {topArtists.map((topArtists: topArtistsInterface, index: number) => {
             return <TopArtistsCards {...topArtists} key={index} />
           })}

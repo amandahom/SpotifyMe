@@ -31,7 +31,7 @@ function About() {
   const [error, setError] = useState('')
   const [isLoaded, setIsLoaded] = useState(false)
   const [user, setUser] = useState<SessionInterface>()
-  const [session, loading] = useSession()
+  const [session] = useSession()
   // const [embedIsLoaded, setembedIsLoaded] = useSession(false)
 
   const requestUser = async (): Promise<any> => {

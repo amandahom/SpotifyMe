@@ -2,28 +2,12 @@ import { signIn, signOut, useSession } from 'next-auth/client'
 import Link from 'next/link'
 import React from 'react'
 
-// interface SessionInterface {
-//   user: userInterface
-//   expires: string
-// }
-
-// interface userInterace {
-//   name: string
-//   email: string
-//   picture: string
-//   sub: string
-//   id: string
-//   accessToken: string
-//   iat: string
-//   exp: string
-// }
-
 interface toggleInterface {
   toggle: any
 }
 
 function Header({ toggle }: toggleInterface) {
-  const [session, loading] = useSession()
+  const [session] = useSession()
   return (
     <>
       <div className="bg-indigo-700 p-4 flex justify-between items-center relative shadow-sm">

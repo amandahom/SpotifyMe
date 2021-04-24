@@ -7,7 +7,7 @@ interface toggleInterface {
 }
 
 function Dropdown({ isOpen, toggle }: toggleInterface) {
-  const [session, loading] = useSession()
+  const [session] = useSession()
   return (
     <>
       <div className={isOpen ? 'text-center items-center' : 'hidden'} onClick={toggle}>

@@ -12,7 +12,7 @@ function Main(this: any) {
   const [showTopTracks, setShowTopTracks] = useState(false)
   const [showAbout, setShowAbout] = useState(false)
   const dropdownRef = useRef(null)
-  const [session, loading] = useSession()
+  const [session] = useSession()
   const [isLoaded, setIsLoaded] = useState(false)
   function handleChange(e: any) {
     let value = e && e.target && e.target.value
