@@ -187,18 +187,20 @@ function FollowedArtists() {
             </p>
           </div>
         </div>
-        <div className="px-6 pt-4 pb-2">
-          {followers.genres.map((genres: String, index: number) => {
-            return (
-              <span
-                key={index}
-                className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-indigo-200"
-              >
-                <p>{genres}</p>
-              </span>
-            )
-          })}
-        </div>
+        {followers && (
+          <div className="px-6 pt-4 pb-2">
+            {followers.genres.map((genres: String, index: number) => {
+              return (
+                <span
+                  key={index}
+                  className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-indigo-200"
+                >
+                  <p>{genres}</p>
+                </span>
+              )
+            })}
+          </div>
+        )}
       </div>
     )
   }
@@ -212,11 +214,13 @@ function FollowedArtists() {
   } else {
     return (
       <div>
-        <div className="p-5 sm:p-10 2xl:p-10 mx-2 md:mx-4 lg:mx-10 pb-10 grid col-start-auto sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 md:gap-10 justify-items-center">
-          {followers.map((followers: followersInterface, index: number) => {
-            return <FollowersCards {...followers} key={index} />
-          })}
-        </div>
+        {followers && (
+          <div className="p-5 sm:p-10 2xl:p-10 mx-2 md:mx-4 lg:mx-10 pb-10 grid col-start-auto sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 md:gap-10 justify-items-center">
+            {followers.map((followers: followersInterface, index: number) => {
+              return <FollowersCards {...followers} key={index} />
+            })}
+          </div>
+        )}
         {showNextButton ? (
           <div>
             <div className="flex justify-center mx-10">
