@@ -1,12 +1,11 @@
 {
-  "name": "spotifys",
+  "name": "spotify",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "tailwindcss build": "tailwindcss@latest build ./src/tailwind.css ./styles/custom.css ./dist/tailwind.css",
-    "start": "next start"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
     "@types/next-auth": "^3.7.4",

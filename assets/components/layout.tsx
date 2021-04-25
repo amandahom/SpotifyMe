@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
-import Header from '../components/Header'
 import Dropdown from './Dropdown'
 import Footer from './Footer'
+import Header from './Header'
 
 const Layout = (props: any) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -23,7 +23,7 @@ const Layout = (props: any) => {
   return (
     <React.Fragment>
       <Head>
-        <title>Spotify</title>
+        <title>SpotifyMe</title>
       </Head>
 
       <Header toggle={toggle} />

@@ -5,36 +5,36 @@ import Loading from './Loading'
 
 function TopTracks() {
   const [session] = useSession()
-  const [topTracks, setTopTracks] = useState<topTracksInterface>()
+  const [topTracks, setTopTracks] = useState<TopTracksInterface>()
   const [isLoaded, setIsLoaded] = useState(false)
   const [nextSearch, setNextSearch] = useState<string>()
   const [showNextButton, setShowNextButton] = useState(false)
 
-  interface topTracksDataInterface {
-    external_urls: urlInterface
-    album: albumInterface
+  interface TopTracksDataInterface {
+    external_urls: UrlInterface
+    album: AlbumInterface
     images: Array<Object>
-    artists: artistInterface[]
+    artists: ArtistInterface[]
     name: string
     popularity: number
   }
 
-  interface urlInterface {
+  interface UrlInterface {
     spotify: string
   }
 
-  interface albumInterface {
+  interface AlbumInterface {
     release_date: string
     name: string
     images: Array<Object>
   }
 
-  interface artistInterface {
+  interface ArtistInterface {
     name: string
   }
 
-  interface topTracksInterface {
-    map(arg0: (topTracks: topTracksInterface, index: number) => JSX.Element): React.ReactNode
+  interface TopTracksInterface {
+    map(arg0: (topTracks: TopTracksInterface, index: number) => JSX.Element): React.ReactNode
     album: string
     artist: string
     url: string
@@ -62,7 +62,7 @@ function TopTracks() {
           },
         })
         let items = await topTracksInfo.json()
-        let topTracks: topTracksDataInterface = items.items.map((topTracks: topTracksDataInterface) => ({
+        let topTracks: TopTracksDataInterface = items.items.map((topTracks: TopTracksDataInterface) => ({
           url: topTracks.external_urls.spotify,
           releasedDate: topTracks.album.release_date,
           album: topTracks.album.name,
@@ -81,7 +81,7 @@ function TopTracks() {
           },
         })
         let items = await topTracksInfo.json()
-        let topTracks: topTracksDataInterface = items.items.map((topTracks: topTracksDataInterface) => ({
+        let topTracks: TopTracksDataInterface = items.items.map((topTracks: TopTracksDataInterface) => ({
           url: topTracks.external_urls.spotify,
           releasedDate: topTracks.album.release_date,
           album: topTracks.album.name,
@@ -142,7 +142,7 @@ function TopTracks() {
     }
   }
 
-  function TopTracksCards(topTracks: topTracksInterface, index: number) {
+  function TopTracksCards(topTracks: TopTracksInterface, index: number) {
     return (
       <div
         className="rounded overflow-hidden shadow-lg max-w-sm 2xl:max-w-xs mb-8 md:mb-0 md:px-0 transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-105 transform hover:shadow-2xl bg-white"
@@ -190,7 +190,7 @@ function TopTracks() {
         {topTracks && (
           <div className="p-5 sm:p-10 2xl:p-10 mx-2 md:mx-4 lg:mx-10 pb-10 grid col-start-auto sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 md:gap-10 justify-items-center">
             {topTracks &&
-              topTracks.map((topTracks: topTracksInterface, index: number) => {
+              topTracks.map((topTracks: TopTracksInterface, index: number) => {
                 return <TopTracksCards {...topTracks} key={index} />
               })}
           </div>

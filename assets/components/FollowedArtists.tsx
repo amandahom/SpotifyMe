@@ -5,14 +5,14 @@ import Loading from './Loading'
 
 function FollowedArtists() {
   const [session] = useSession()
-  const [followers, setFollowers] = useState<followersInterface>()
+  const [followers, setFollowers] = useState<FollowersInterface>()
   const [isLoaded, setIsLoaded] = useState(false)
   const [nextSearch, setNextSearch] = useState<string>()
   const [showNextButton, setShowNextButton] = useState(false)
 
-  interface followersDataInterface {
-    external_urls: urlInterface
-    followers: fansInterface
+  interface FollowersDataInterface {
+    external_urls: UrlInterface
+    followers: FansInterface
     genres: Array<String>
     href: string
     images: Array<Object>
@@ -20,26 +20,26 @@ function FollowedArtists() {
     popularity: number
   }
 
-  interface urlInterface {
+  interface UrlInterface {
     spotify: string
   }
 
-  interface fansInterface {
+  interface FansInterface {
     total: number
   }
 
-  interface followersInterface {
-    map(arg0: (followers: followersInterface, index: number) => JSX.Element): React.ReactNode
+  interface FollowersInterface {
+    map(arg0: (followers: FollowersInterface, index: number) => JSX.Element): React.ReactNode
     url: string
     fans: number
     genres: Array<String>
     href: string
-    images: imagesInterface[]
+    images: ImagesInterface[]
     name: string
     popularity: number
   }
 
-  interface imagesInterface {
+  interface ImagesInterface {
     url: string
   }
 
@@ -58,7 +58,7 @@ function FollowedArtists() {
         })
         let items = await followersInfo.json()
 
-        let followers: followersDataInterface = items.artists.items.map((followers: followersDataInterface) => ({
+        let followers: FollowersDataInterface = items.artists.items.map((followers: FollowersDataInterface) => ({
           url: followers.external_urls.spotify,
           fans: followers.followers.total,
           genres: followers.genres,
@@ -78,7 +78,7 @@ function FollowedArtists() {
           },
         })
         let items = await followersInfo.json()
-        let followers: followersDataInterface = items.artists.items.map((followers: followersDataInterface) => ({
+        let followers: FollowersDataInterface = items.artists.items.map((followers: FollowersDataInterface) => ({
           url: followers.external_urls.spotify,
           fans: followers.followers.total,
           genres: followers.genres,
@@ -161,7 +161,7 @@ function FollowedArtists() {
     }
   }
 
-  function FollowersCards(followers: followersInterface, index: number) {
+  function FollowersCards(followers: FollowersInterface, index: number) {
     return (
       <div
         className="rounded overflow-hidden shadow-lg max-w-sm 2xl:max-w-xs mb-8 md:mb-0 md:px-0 transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-105 transform hover:shadow-2xl bg-white"
@@ -220,7 +220,7 @@ function FollowedArtists() {
         {followers && (
           <div className="p-5 sm:p-10 2xl:p-10 mx-2 md:mx-4 lg:mx-10 pb-10 grid col-start-auto sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 md:gap-10 justify-items-center">
             {followers &&
-              followers.map((followers: followersInterface, index: number) => {
+              followers.map((followers: FollowersInterface, index: number) => {
                 return <FollowersCards {...followers} key={index} />
               })}
           </div>

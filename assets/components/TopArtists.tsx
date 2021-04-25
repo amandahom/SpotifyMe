@@ -5,14 +5,14 @@ import Loading from './Loading'
 
 function TopArtists() {
   const [session] = useSession()
-  const [topArtists, setTopArtists] = useState<topArtistsInterface>()
+  const [topArtists, setTopArtists] = useState<TopArtistsInterface>()
   const [isLoaded, setIsLoaded] = useState(false)
   const [nextSearch, setNextSearch] = useState<string>()
   const [showNextButton, setShowNextButton] = useState(false)
 
-  interface topArtistsDataInterface {
-    external_urls: urlInterface
-    followers: fansInterface
+  interface TopArtistsDataInterface {
+    external_urls: UrlInterface
+    followers: FansInterface
     genres: Array<String>
     href: string
     images: Array<Object>
@@ -20,26 +20,26 @@ function TopArtists() {
     popularity: number
   }
 
-  interface urlInterface {
+  interface UrlInterface {
     spotify: string
   }
 
-  interface fansInterface {
+  interface FansInterface {
     total: number
   }
 
-  interface topArtistsInterface {
-    map(arg0: (topArtists: topArtistsInterface, index: number) => JSX.Element): React.ReactNode
+  interface TopArtistsInterface {
+    map(arg0: (topArtists: TopArtistsInterface, index: number) => JSX.Element): React.ReactNode
     url: string
     fans: number
     genres: Array<String>
     href: string
-    images: imagesInterface[]
+    images: ImagesInterface[]
     name: string
     popularity: number
   }
 
-  interface imagesInterface {
+  interface ImagesInterface {
     url: string
   }
 
@@ -58,7 +58,7 @@ function TopArtists() {
           },
         })
         let items = await topArtistInfo.json()
-        let topArtists: topArtistsDataInterface = items.items.map((topArtists: topArtistsDataInterface) => ({
+        let topArtists: TopArtistsDataInterface = items.items.map((topArtists: TopArtistsDataInterface) => ({
           url: topArtists.external_urls.spotify,
           fans: topArtists.followers.total,
           genres: topArtists.genres,
@@ -78,7 +78,7 @@ function TopArtists() {
           },
         })
         let items = await topArtistInfo.json()
-        let topArtists: topArtistsDataInterface = items.items.map((topArtists: topArtistsDataInterface) => ({
+        let topArtists: TopArtistsDataInterface = items.items.map((topArtists: TopArtistsDataInterface) => ({
           url: topArtists.external_urls.spotify,
           fans: topArtists.followers.total,
           genres: topArtists.genres,
@@ -140,7 +140,7 @@ function TopArtists() {
     }
   }
 
-  function TopArtistsCards(topArtists: topArtistsInterface, index: number) {
+  function TopArtistsCards(topArtists: TopArtistsInterface, index: number) {
     return (
       <div
         className="rounded overflow-hidden shadow-lg max-w-sm 2xl:max-w-xs mb-8 md:mb-0 md:px-0 transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-105 transform hover:shadow-2xl bg-white"
@@ -199,7 +199,7 @@ function TopArtists() {
         {topArtists && (
           <div className="p-5 sm:p-10 2xl:p-10 mx-2 md:mx-4 lg:mx-10 pb-10 grid col-start-auto sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 md:gap-10 justify-items-center">
             {topArtists &&
-              topArtists.map((topArtists: topArtistsInterface, index: number) => {
+              topArtists.map((topArtists: TopArtistsInterface, index: number) => {
                 return <TopArtistsCards {...topArtists} key={index} />
               })}
           </div>
