@@ -2,7 +2,7 @@ import Layout from 'assets/components/Layout'
 import Main from 'assets/components/Main'
 import { useSession } from 'next-auth/client'
 export default function Home() {
-  const [session, loading] = useSession()
+  const [session] = useSession()
 
   if (!session) {
     return (

@@ -5,9 +5,9 @@ import Loading from './Loading'
 
 function FollowedArtists() {
   const [session] = useSession()
-  const [followers, setFollowers] = useState()
+  const [followers, setFollowers] = useState<followersInterface>()
   const [isLoaded, setIsLoaded] = useState(false)
-  const [nextSearch, setNextSearch] = useState()
+  const [nextSearch, setNextSearch] = useState<string>()
   const [showNextButton, setShowNextButton] = useState(false)
 
   interface followersDataInterface {
@@ -29,6 +29,7 @@ function FollowedArtists() {
   }
 
   interface followersInterface {
+    map(arg0: (followers: followersInterface, index: number) => JSX.Element): React.ReactNode
     url: string
     fans: number
     genres: Array<String>
@@ -57,7 +58,7 @@ function FollowedArtists() {
         })
         let items = await followersInfo.json()
 
-        let followers = items.artists.items.map((followers: followersDataInterface) => ({
+        let followers: followersDataInterface = items.artists.items.map((followers: followersDataInterface) => ({
           url: followers.external_urls.spotify,
           fans: followers.followers.total,
           genres: followers.genres,
@@ -77,7 +78,7 @@ function FollowedArtists() {
           },
         })
         let items = await followersInfo.json()
-        let followers = items.artists.items.map((followers: followersDataInterface) => ({
+        let followers: followersDataInterface = items.artists.items.map((followers: followersDataInterface) => ({
           url: followers.external_urls.spotify,
           fans: followers.followers.total,
           genres: followers.genres,
@@ -190,7 +191,8 @@ function FollowedArtists() {
         {followers && (
           <div className="px-6 pt-4 pb-2">
             {followers &&
-              followers!.genres!.map((genres: String, index: number) => {
+              followers.genres &&
+              followers.genres.map((genres: String, index: number) => {
                 return (
                   <span
                     key={index}
@@ -218,7 +220,7 @@ function FollowedArtists() {
         {followers && (
           <div className="p-5 sm:p-10 2xl:p-10 mx-2 md:mx-4 lg:mx-10 pb-10 grid col-start-auto sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 md:gap-10 justify-items-center">
             {followers &&
-              followers!.map((followers: followersInterface, index: number) => {
+              followers.map((followers: followersInterface, index: number) => {
                 return <FollowersCards {...followers} key={index} />
               })}
           </div>
@@ -229,7 +231,7 @@ function FollowedArtists() {
               <button
                 className="flex border bg-blue-300 hover:bg-blue-200 hover:border-blue-700 rounded transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-y-100 transform hover:shadow-2xl py-4 px-6 justify-center items-center w-7/12 md:w-60 lg:w-40 focus:outline-none"
                 onClick={() => {
-                  onSubmit(nextSearch)
+                  onSubmit(nextSearch as string)
                 }}
               >
                 <p className="text-black-700 hover:text-blue-700 pr-2">Next Page</p>

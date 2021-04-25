@@ -5,9 +5,9 @@ import Loading from './Loading'
 
 function TopTracks() {
   const [session] = useSession()
-  const [topTracks, setTopTracks] = useState()
+  const [topTracks, setTopTracks] = useState<topTracksInterface>()
   const [isLoaded, setIsLoaded] = useState(false)
-  const [nextSearch, setNextSearch] = useState()
+  const [nextSearch, setNextSearch] = useState<string>()
   const [showNextButton, setShowNextButton] = useState(false)
 
   interface topTracksDataInterface {
@@ -34,6 +34,7 @@ function TopTracks() {
   }
 
   interface topTracksInterface {
+    map(arg0: (topTracks: topTracksInterface, index: number) => JSX.Element): React.ReactNode
     album: string
     artist: string
     url: string
@@ -189,7 +190,7 @@ function TopTracks() {
         {topTracks && (
           <div className="p-5 sm:p-10 2xl:p-10 mx-2 md:mx-4 lg:mx-10 pb-10 grid col-start-auto sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 md:gap-10 justify-items-center">
             {topTracks &&
-              topTracks!.map((topTracks: topTracksInterface, index: number) => {
+              topTracks.map((topTracks: topTracksInterface, index: number) => {
                 return <TopTracksCards {...topTracks} key={index} />
               })}
           </div>
@@ -200,7 +201,7 @@ function TopTracks() {
               <button
                 className="flex border bg-blue-300 hover:bg-blue-200 hover:border-blue-700 rounded transition duration-500 ease-in-out hover:-translate-y-1 hover:scale-y-100 transform hover:shadow-2xl py-4 px-6 justify-center items-center w-7/12 md:w-60 lg:w-40 focus:outline-none"
                 onClick={() => {
-                  onSubmit(nextSearch)
+                  onSubmit(nextSearch as string)
                 }}
               >
                 <p className="text-black-700 hover:text-blue-700 pr-2">Next Page</p>
