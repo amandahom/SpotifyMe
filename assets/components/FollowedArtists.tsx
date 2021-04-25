@@ -190,7 +190,7 @@ function FollowedArtists() {
         {followers && (
           <div className="px-6 pt-4 pb-2">
             {followers &&
-              followers.genres.map((genres: String, index: number) => {
+              followers!.genres!.map((genres: String, index: number) => {
                 return (
                   <span
                     key={index}
@@ -218,7 +218,7 @@ function FollowedArtists() {
         {followers && (
           <div className="p-5 sm:p-10 2xl:p-10 mx-2 md:mx-4 lg:mx-10 pb-10 grid col-start-auto sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 md:gap-10 justify-items-center">
             {followers &&
-              followers.map((followers: followersInterface, index: number) => {
+              followers!.map((followers: followersInterface, index: number) => {
                 return <FollowersCards {...followers} key={index} />
               })}
           </div>
