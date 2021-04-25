@@ -78,7 +78,7 @@ function About() {
       let accessToken =
         session && session.user && session.user.accessToken && session.user.accessToken ? session.user.accessToken : ''
 
-      const ENDPOINT = `https://api.spotify.com/v1/me`
+      const ENDPOINT: string = `https://api.spotify.com/v1/me`
 
       const response = await fetch(ENDPOINT, {
         method: 'GET',
@@ -113,7 +113,7 @@ function About() {
       let accessToken =
         session && session.user && session.user.accessToken && session.user.accessToken ? session.user.accessToken : ''
 
-      const ENDPOINT = `https://api.spotify.com/v1/playlists/0bUsfKxond7zP7H0XmJXve`
+      const ENDPOINT: string = `https://api.spotify.com/v1/playlists/0bUsfKxond7zP7H0XmJXve`
 
       const response = await fetch(ENDPOINT, {
         method: 'GET',
@@ -154,11 +154,9 @@ function About() {
       if (session) {
         let userData = await requestUser()
         let playlistData = await requestPlaylist()
-        console.log(playlistData)
         setUser(userData)
         setTracks(playlistData.tracksInfo)
         setIsLoaded(true)
-        console.log('Session exists.')
       } else {
         setError('Please log in.')
         console.log('Session does not exist.')
