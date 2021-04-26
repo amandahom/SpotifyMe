@@ -2,7 +2,7 @@ import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
 import Dropdown from '../components/Dropdown'
 import Footer from '../components/Footer'
-import Header from '../components/Headers'
+import Header from '../components/Header'
 
 const Layout = (props: any) => {
   const [isOpen, setIsOpen] = useState(false)

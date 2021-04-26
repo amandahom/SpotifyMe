@@ -1,6 +1,6 @@
-import Layout from 'assets/components/Layout'
-import Main from 'assets/components/Main'
 import { useSession } from 'next-auth/client'
+import Layout from '../assets/components/Layout'
+import Main from '../assets/components/Main'
 export default function Home() {
   const [session] = useSession()
 
