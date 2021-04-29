@@ -210,7 +210,7 @@ function FollowedArtists() {
 
   if (!isLoaded) {
     return (
-      <div className="flex justify-center items-center h-96">
+      <div className="flex justify-center items-center h-screen">
         <Loading />
       </div>
     )

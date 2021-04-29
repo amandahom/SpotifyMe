@@ -169,7 +169,7 @@ function About() {
     return <div>Could not get results.</div>
   } else if (!isLoaded) {
     return (
-      <div className="flex justify-center items-center h-96">
+      <div className="flex justify-center items-center h-screen">
         <Loading />
       </div>
     )
@@ -209,7 +209,7 @@ function About() {
             </h1>
           )}
         </div>
-        <h1 className="text-xl pt-3 pb-6 text-center font-bold">Recent songs that Mandy is addicted to:</h1>
+        <h1 className="sm:text-xl text-md pt-3 pb-6 text-center font-bold">Recent songs that Mandy is addicted to:</h1>
         <div className="flex flex-col 2xl:mx-96 mx-0 px-6 2xl:px-40">
           <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
