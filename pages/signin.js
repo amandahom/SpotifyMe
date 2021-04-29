@@ -21,7 +21,7 @@ function SignIn({ providers }) {
                 <button
                   key={index}
                   type="submit"
-                  onClick={() => signIn(provider.id, { callbackUrl: 'http://localhost:3000/' })}
+                  onClick={() => signIn(provider.id, { callbackUrl: 'https://spotifyme.amandahom.com/' })}
                   className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none"
                 >
                   Sign in
