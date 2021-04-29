@@ -1,10 +1,10 @@
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
-import Dropdown from '../components/Dropdown'
-import Footer from '../components/Footer'
-import Header from '../components/Header'
+import Dropdown from './Dropdown'
+import Footer from './Footer'
+import Header from './Header'
 
-const Layout = (props: any) => {
+const Layouts = (props: any) => {
   const [isOpen, setIsOpen] = useState(false)
   const toggle = () => {
     setIsOpen(!isOpen)
@@ -35,4 +35,4 @@ const Layout = (props: any) => {
   )
 }
 
-export default Layout
+export default Layouts

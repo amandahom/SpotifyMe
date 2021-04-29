@@ -1,12 +1,12 @@
 import { useSession } from 'next-auth/client'
-import Layout from '../assets/components/Layout'
+import Layouts from '../assets/components/Layouts'
 import Main from '../assets/components/Main'
 export default function Home() {
   const [session] = useSession()
 
   if (!session) {
     return (
-      <Layout>
+      <Layouts>
         <main>
           {/* <img
             src="https://res.cloudinary.com/cub95/image/upload/v1618796401/solen-feyissa-6MaaSBw0saw-unsplash_1_or8tmk.jpg"
@@ -16,13 +16,13 @@ export default function Home() {
             <div className="text-center py-72 text-6xl text-blue-900 text-opacity-80">SpotifyMe</div>
           </div>
         </main>
-      </Layout>
+      </Layouts>
     )
   } else {
     return (
-      <Layout>
+      <Layouts>
         <Main />
-      </Layout>
+      </Layouts>
     )
   }
 }
