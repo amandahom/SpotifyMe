@@ -29,14 +29,18 @@ interface SessionInterface {
 
 interface PlaylistDataInterface {
   added_at: string
-  track: TracksInterface
+  track: TracksDataInterface
 }
 
-interface TracksInterface {
-  external_urls: string
+interface TracksDataInterface {
+  external_urls: UrlInterface
   album: AlbumInterface
   name: string
   artists: ArtistsInterface
+}
+
+interface UrlInterface {
+  spotify: string
 }
 
 interface AlbumInterface {
@@ -55,11 +59,11 @@ interface ArtistsNameInterface {
 interface TracksInterface {
   map(arg0: (tracks: TracksInterface, index: number) => JSX.Element): React.ReactNode
   added_at: string
+  albumName: string
+  artistName: string
   external_urls: string
   images: ImagesInterface[]
   name: string
-  albumName: string
-  artistName: string
 }
 
 interface ImagesInterface {
@@ -122,10 +126,9 @@ function About() {
         },
       })
       const data = await response.json()
-      console.log(data)
       let tracksInfo: PlaylistDataInterface = data.tracks.items.map((tracksInfo: PlaylistDataInterface) => ({
         added_at: tracksInfo.added_at.toString().slice(0, 10),
-        external_urls: tracksInfo.track.external_urls,
+        external_urls: tracksInfo.track.external_urls.spotify,
         images: tracksInfo.track.album.images,
         name: tracksInfo.track.name,
         artistName: tracksInfo.track.artists[0].name,
@@ -249,7 +252,7 @@ function About() {
                             <a
                               href={tracks.external_urls}
                               target="_blank"
-                              className="col-span-1 justify-self-end cursor:pointer"
+                              className="col-span-1 justify-self-end cursor-pointer"
                             >
                               <svg
                                 className="w-10 h-10"
