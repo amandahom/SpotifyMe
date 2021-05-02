@@ -190,7 +190,7 @@ function About() {
         <div className="text-center">
           {user && (
             <h1 className="text-xl py-2">
-              Listen now{' '}
+              Listen to your Spotify now{' '}
               <div className="inline-block">
                 <a href={user.externalURL} target="_blank">
                   <svg
