@@ -1,6 +1,6 @@
 # SpotifyMe
 
-A responsive web application that allows users to authorize their Spotify account and navigate results from [Spotify’s REST API](https://developer.spotify.com/documentation/web-api/) 🎧
+A responsive web application that allows users to authorize their Spotify account and navigate results from [Spotify’s REST API](https://developer.spotify.com/documentation/web-api/). 🎧
 
 ![](assets/src/website.gif)
 
