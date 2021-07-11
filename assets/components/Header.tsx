@@ -28,9 +28,9 @@ function Header({ toggle }: toggleInterface) {
               <div className="hidden md:inline-block py-2 px-4 text-indigo-200 mr-2">Not signed in</div>
               <button
                 onClick={() => signIn()}
-                className="inline-block py-2 px-4 text-indigo-700 hover:text-indigo-100 bg-indigo-200 hover:bg-indigo-500 border-indigo-200 border-2 rounded transition ease-in duration-150 focus:outline-none"
+                className="inline-block py-2 px-2 text-indigo-700 hover:text-indigo-100 bg-indigo-200 hover:bg-indigo-500 border-indigo-200 border-2 rounded transition ease-in duration-150 focus:outline-none"
               >
-                Sign in
+                Sign in & View Demo
               </button>
             </>
           )}

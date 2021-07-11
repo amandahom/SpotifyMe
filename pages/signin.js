@@ -29,13 +29,27 @@ function SignIn({ providers }) {
               )
             })}
           </div>
+          <div>
+            <h1 className="mt-10 text-lg text-black py-4 text-center">
+              Here is a short video to view the project if you prefer to not sign in with your email address.
+              <div className="p-4">
+                <a
+                  target="_blank"
+                  className="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-500 hover:bg-purple-700"
+                  href="https://youtu.be/DRw-771oh9I"
+                >
+                  View Video
+                </a>
+              </div>
+            </h1>
+          </div>
         </div>
       </div>
     </div>
   )
 }
 
-SignIn.getInitialProps = async context => {
+SignIn.getInitialProps = async (context) => {
   const { req, res } = context
   const session = await getSession({ req })
 
