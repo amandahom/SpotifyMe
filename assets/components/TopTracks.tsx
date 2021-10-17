@@ -61,7 +61,7 @@ function TopTracks() {
             Authorization: `Bearer ${accessToken}`,
           },
         })
-        let items = await topTracksInfo.json()
+        let items: any = await topTracksInfo.json()
         let topTracks: TopTracksDataInterface = items.items.map((topTracks: TopTracksDataInterface) => ({
           url: topTracks.external_urls.spotify,
           releasedDate: topTracks.album.release_date,
@@ -80,7 +80,7 @@ function TopTracks() {
             Authorization: `Bearer ${accessToken}`,
           },
         })
-        let items = await topTracksInfo.json()
+        let items: any = await topTracksInfo.json()
         let topTracks: TopTracksDataInterface = items.items.map((topTracks: TopTracksDataInterface) => ({
           url: topTracks.external_urls.spotify,
           releasedDate: topTracks.album.release_date,

@@ -15,7 +15,7 @@ function Dropdown({ isOpen, toggle }: toggleInterface) {
           {!session && (
             <>
               <div className="bg-indigo-500 py-6">
-                <div className="inline-block block py-2 px-4 text-indigo-100 pb-5">Not signed in</div>
+                <div className="inline-block py-2 px-4 text-indigo-100 pb-5">Not signed in</div>
                 <button
                   onClick={() => signIn()}
                   className="block py-2 px-4 my-1 mx-auto text-indigo-700 hover:text-indigo-100 bg-indigo-200 hover:bg-indigo-500 border-indigo-200 border-2 rounded transition ease-in duration-150 cursor-pointer"

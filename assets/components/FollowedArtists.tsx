@@ -56,7 +56,7 @@ function FollowedArtists() {
             Authorization: `Bearer ${accessToken}`,
           },
         })
-        let items = await followersInfo.json()
+        let items: any = await followersInfo.json()
 
         let followers: FollowersDataInterface = items.artists.items.map((followers: FollowersDataInterface) => ({
           url: followers.external_urls.spotify,
@@ -77,7 +77,7 @@ function FollowedArtists() {
             Authorization: `Bearer ${accessToken}`,
           },
         })
-        let items = await followersInfo.json()
+        let items: any = await followersInfo.json()
         let followers: FollowersDataInterface = items.artists.items.map((followers: FollowersDataInterface) => ({
           url: followers.external_urls.spotify,
           fans: followers.followers.total,

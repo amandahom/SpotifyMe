@@ -57,7 +57,7 @@ function TopArtists() {
             Authorization: `Bearer ${accessToken}`,
           },
         })
-        let items = await topArtistInfo.json()
+        let items: any = await topArtistInfo.json()
         let topArtists: TopArtistsDataInterface = items.items.map((topArtists: TopArtistsDataInterface) => ({
           url: topArtists.external_urls.spotify,
           fans: topArtists.followers.total,
@@ -77,7 +77,7 @@ function TopArtists() {
             Authorization: `Bearer ${accessToken}`,
           },
         })
-        let items = await topArtistInfo.json()
+        let items: any = await topArtistInfo.json()
         let topArtists: TopArtistsDataInterface = items.items.map((topArtists: TopArtistsDataInterface) => ({
           url: topArtists.external_urls.spotify,
           fans: topArtists.followers.total,

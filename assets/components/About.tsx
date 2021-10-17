@@ -81,7 +81,7 @@ function About() {
     try {
       let accessToken =
         session && session.user && session.user.accessToken && session.user.accessToken ? session.user.accessToken : ''
-
+      console.log('accessToken', accessToken)
       const ENDPOINT: string = `https://api.spotify.com/v1/me`
 
       const response = await fetch(ENDPOINT, {
@@ -90,7 +90,8 @@ function About() {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-      const data = await response.json()
+      const data: any = await response
+      console.log(data)
       return getUser(data)
     } catch (err) {
       console.log(err)
@@ -125,7 +126,7 @@ function About() {
           Authorization: `Bearer ${accessToken}`,
         },
       })
-      const data = await response.json()
+      const data: any = await response.json()
       let tracksInfo: PlaylistDataInterface = data.tracks.items.map((tracksInfo: PlaylistDataInterface) => ({
         added_at: tracksInfo.added_at.toString().slice(0, 10),
         external_urls: tracksInfo.track.external_urls.spotify,
